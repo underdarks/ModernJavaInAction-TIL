@@ -1,6 +1,7 @@
 package modernjavainaction.practice;
 
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,7 @@ import java.util.stream.Stream;
 import static modernjavainaction.practice.DataManager.*;
 import static modernjavainaction.practice.Dish.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class Chapter4Test {
@@ -102,8 +104,11 @@ public class Chapter4Test {
         List<String> title = Arrays.asList("Java8", "In", "Action");
         Stream<String> s=title.stream();
         s.forEach(System.out::println);
+
         //java.lang.IllegalStateException: stream has already been operated upon or closed 예외 발생 -> 스트림은 한 번만 탐색 가능
-        s.forEach(System.out::println);
+        assertThrows(IllegalStateException.class,() ->{
+            s.forEach(System.out::println);
+        });
     }
 
     @DisplayName("컬렉션 외부 반복")
@@ -141,7 +146,7 @@ public class Chapter4Test {
 
     @DisplayName("퀴즈 4-1 리팩토링")
     @Test
-    public void Quiz_4_1(){
+    public void quiz_4_1(){
         //리팩토링 전 코드
         Collection<Dish> dishes = getDishList();
         List<String> highCaloriesDishes=new ArrayList<>();
@@ -198,7 +203,7 @@ public class Chapter4Test {
 
     @DisplayName("퀴즈 4-2")
     @Test
-    public void Quiz_4_2(){
+    public void quiz_4_2(){
         long count = getDishList().stream()
                 .filter(d -> d.getCalories() > 300)     //중간 연산
                 .distinct()                             //중간 연산
