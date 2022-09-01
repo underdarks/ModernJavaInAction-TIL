@@ -1,7 +1,6 @@
 package modernjavainaction.practice;
 
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -12,12 +11,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static modernjavainaction.practice.DataManager.*;
-import static modernjavainaction.practice.Dish.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class Chapter4Test {
+public class Chapter4 {
 
 
     @DisplayName("칼로리 300이하인 음식들의 요리명을 낮은 칼로리 기준으로 정렬 후 반환한다")

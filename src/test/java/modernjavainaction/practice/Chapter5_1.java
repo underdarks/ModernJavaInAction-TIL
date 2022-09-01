@@ -12,7 +12,7 @@ import static java.util.stream.Collectors.*;
 import static modernjavainaction.practice.DataManager.*;
 import static org.assertj.core.api.Assertions.*;
 
-public class Chapter5Test {
+public class Chapter5_1 {
 
     @DisplayName("프레디케이트(불리언을 반환하는 함수)을 활용한 채식주의자 음식 필터링 하기")
     @Test
