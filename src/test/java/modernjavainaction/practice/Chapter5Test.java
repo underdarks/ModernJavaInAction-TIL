@@ -1,16 +1,11 @@
 package modernjavainaction.practice;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
@@ -21,7 +16,7 @@ public class Chapter5Test {
 
     @DisplayName("프레디케이트(불리언을 반환하는 함수)을 활용한 채식주의자 음식 필터링 하기")
     @Test
-    public void doFilterByVegetarianDish() {
+    public void FilterByVegetarianDishWithPredicate() {
         //given
         Collection<Dish> dishes = getDishList();
 
@@ -41,7 +36,7 @@ public class Chapter5Test {
 
     @DisplayName("고유 요소로 이루어진 스트림 짝수 필터링")
     @Test
-    public void doFilterByUniqueElement() {
+    public void ilterEvenNumber() {
         //given
         List<Integer> numbers = Arrays.asList(1, 2, 1, 3, 3, 2, 4);
 
@@ -335,7 +330,7 @@ public class Chapter5Test {
 
         //when
         boolean result = dishes.stream()
-                .allMatch(dish -> dish.getCalories()<=1000);
+                .allMatch(dish -> dish.getCalories() <= 1000);
 
 
         //then
@@ -345,13 +340,13 @@ public class Chapter5Test {
     //모든 요소 불일치 확인(쇼트서킷, <-> AllMatch와 반대 연산)
     @DisplayName("모든 음식이 1000칼로리 이상인지 확인")
     @Test
-    public void isAllFoodOver000Kcal() {
+    public void isAllFoodOver1000Kcal() {
         //given
         Collection<Dish> dishes = getDishList();
 
         //when
         boolean result = dishes.stream()
-                .noneMatch(dish -> dish.getCalories()>=1000);
+                .noneMatch(dish -> dish.getCalories() >= 1000);
 
 
         //then
@@ -360,7 +355,7 @@ public class Chapter5Test {
 
     @DisplayName("요소 검색")
     @Test
-    public void ElementSearchByfindAny(){
+    public void ElementSearchByfindAny() {
         //given
         Collection<Dish> dishes = getDishList();
 
@@ -368,9 +363,149 @@ public class Chapter5Test {
         dishes.stream()
                 .filter(Dish::isVegetarian)
                 .findAny()
+                .ifPresent(System.out::println);
+
+        //then
+    }
+
+
+    /**
+     * findFirst와 findAny는 왜, 언제 사용하나?
+     * ->병렬 실행에서는 첫 번째 요소를 찾기 어렵다. 반환 순서가 상관 없다면 Parallel Stream에서는 제약이 적은 findAny가 더 작합하다
+     * ->순차 실행에서는 findFirst를 활용하여 조건에 부합한 첫번째 요소를 찾을 때 유용하다
+     */
+    @DisplayName("첫번째 요소 찾기")
+    @Test
+    public void findFirstElement() {
+
+        //given
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 6);
+
+        //when
+        Integer result = list.stream()
+                .map(value -> value * value)
+                .filter(value -> value % 3 == 0)
+                .findFirst()
+                .orElse(0);
 
 
         //then
+        assertThat(result).isEqualTo(9);
+    }
+
+
+    /**
+     * 리듀싱
+     * -> 모든 스트림 요소를 처리해서 값으로 도출하는 과정
+     * -> FP에서는 종이를 작은 조각이 될 떄까지 반복해서 접는 것과 비슿해서 "폴드"라 부름
+     */
+
+    @DisplayName("리듀싱을 적용하기 전 리스트의 모든 요소 더하기")
+    @Test
+    public void sumWithStreamSumMethod() {
+        //given
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+
+        //when
+        int sum = list.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+
+        System.out.println("sum = " + sum);
+        //then
+        assertThat(sum).isEqualTo(15);
+    }
+
+    @DisplayName("리듀싱을 적용 후 리스트의 모든 요소 더하기")
+    @Test
+    public void sumWithReducing() {
+        //given
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+
+        //when
+        /**
+         * 파라미터 = 초기값, accumulator(누산기,람다)
+         * (1+2) +3) +4) +5) 이런식으로 누적으로 계산되서 마지막 스트림 요소까지 연산한다
+         */
+        Integer sum = list.stream()
+                .reduce(0, (a, b) -> a + b);
+
+        //메소드 참조
+//        Integer sum = list.stream()
+//                .reduce(0, Integer::sum);
+
+
+        System.out.println("sum = " + sum);
+        //then
+        assertThat(sum).isEqualTo(15);
+    }
+
+    @DisplayName("초기값이 없는 리듀싱을 적용 후 리스트의 모든 요소 더하기")
+    @Test
+    public void sumWithReducingNotInitValue() {
+        //given
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+
+        //when
+        Integer sum = list.stream()
+                .reduce((a, b) -> a + b)//초기값이 없는 reduce는 Optional을 반환함
+                .orElse(0);
+
+
+        System.out.println("sum = " + sum);
+        //then
+        assertThat(sum).isEqualTo(15);
+    }
+
+
+    @DisplayName("Reduce를 활용한 최대값 구하기")
+    @Test
+    public void getMaxValueWithReduce(){
+        //given
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+
+        //when
+        Integer maxValue = list.stream()
+                .reduce(Math::max)
+                .orElse(0);
+
+
+        //then
+        assertThat(maxValue).isEqualTo(5);
+    }
+
+
+    @DisplayName("Reduce를 활용한 최소값 구하기")
+    @Test
+    public void getMinValueWithReduce(){
+        //given
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+
+        //when
+        Integer minValue = list.stream()
+                .reduce(Math::min)
+                .orElse(0);
+
+
+        //then
+        assertThat(minValue).isEqualTo(1);
+    }
+
+
+    @DisplayName("퀴즈 5-3 map과 reduce를 (맵 리듀스 패턴) 활용한 요리개수 구하기")
+    @Test
+    public void quiz_5_3(){
+        //given
+        Collection<Dish> dishList = getDishList();
+
+        //when
+        Integer count = dishList.stream()
+                .map(dish -> 1)
+                .reduce(0, Integer::sum);
+
+        //then
+        System.out.println("count = " + count);
     }
 
 
