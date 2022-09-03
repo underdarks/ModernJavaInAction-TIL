@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.util.Comparator.*;
 import static java.util.stream.Collectors.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -43,15 +44,15 @@ public class Chapter5_실전연습 {
         List<Transaction> transactions = createTransactionData();
 
         //when
-        List<Transaction> result = transactions.stream()
+        List<Transaction> tr2011 = transactions.stream()
                 .filter(transaction -> transaction.getYear() == 2011)
-                .sorted(Comparator.comparing(Transaction::getValue))
+                .sorted(comparing(Transaction::getValue))
                 .collect(toList());
 
-        result.forEach(System.out::println);
+        tr2011.forEach(System.out::println);
 
         //then
-        assertThat(result.size()).isEqualTo(2);
+        assertThat(tr2011.size()).isEqualTo(2);
     }
 
     @DisplayName("실전연습 2번 - 거래자가 근무하는 모든 도시를 중복 없이 나열하시오.")
@@ -61,15 +62,24 @@ public class Chapter5_실전연습 {
         List<Transaction> transactions = createTransactionData();
 
         //when
-        List<String> cityList = transactions.stream()
+        //distinct()와 List를 활용한 중복 제거
+        List<String> cities = transactions.stream()
                 .map(transaction -> transaction.getTrader().getCity())
                 .distinct()
                 .collect(toList());
 
-        cityList.forEach(System.out::println);
+        cities.forEach(System.out::println);
+
+        //Set을 이용하여 중복 제거 방식
+//        //when
+//        Set<String> cities2 = transactions.stream()
+//                .map(transaction -> transaction.getTrader().getCity())
+//                .collect(toSet());
+//
+//        cities2.forEach(System.out::println);
 
         //then
-        assertThat(cityList.size()).isEqualTo(2);
+        assertThat(cities.size()).isEqualTo(2);
     }
 
     @DisplayName("실전연습 3번 - 케임브리지에서 근무하는 모든 거래자를 찾아서 이름순으로 정렬하시오.")
@@ -82,8 +92,8 @@ public class Chapter5_실전연습 {
         List<Trader> traders = transactions.stream()
                 .filter(transaction -> transaction.getTrader().getCity().equals(CAMBRIDGE))
                 .map(Transaction::getTrader)
-                .sorted(Comparator.comparing(Trader::getName).reversed())   //내림차순 정렬
                 .distinct()
+                .sorted(comparing(Trader::getName).reversed())   //내림차순 정렬
                 .collect(toList());
 
         //then
@@ -117,12 +127,11 @@ public class Chapter5_실전연습 {
         List<Transaction> transactions = createTransactionData();
 
         //when
-        List<Transaction> traders = transactions.stream()
-                .filter(transaction -> transaction.getTrader().getCity().equals(MILIAN))
-                .collect(toList());
+        boolean isMilanoTrader = transactions.stream()
+                .anyMatch(transaction -> transaction.getTrader().getCity().equals(MILIAN));
 
         //then
-        assertThat(traders.size()).isGreaterThanOrEqualTo(1);
+        assertThat(isMilanoTrader).isEqualTo(true);
     }
 
     @DisplayName("실전연습 6번 - 케임브리지에 거주하는 거래자의 모든 트랜잭션값을 출력하시오.")
@@ -132,12 +141,13 @@ public class Chapter5_실전연습 {
         List<Transaction> transactions = createTransactionData();
 
         //when
-        List<Transaction> transactionList = transactions.stream()
+        List<Integer> values = transactions.stream()
                 .filter(transaction -> transaction.getTrader().getCity().equals(CAMBRIDGE))
+                .map(Transaction::getValue)
                 .collect(toList());
 
         //then
-        transactionList.forEach(System.out::println);
+        values.forEach(System.out::println);
     }
 
 
@@ -148,10 +158,20 @@ public class Chapter5_실전연습 {
         List<Transaction> transactions = createTransactionData();
 
         //when
+        //reduce를 활용한 max값 구하기
         Integer max = transactions.stream()
                 .map(Transaction::getValue)
                 .reduce(Math::max)
                 .orElse(0);
+
+
+        //max()를 활용한 최대값
+//        Integer max2 = transactions.stream()
+//                .max(comparing(Transaction::getValue))
+//                .map(Transaction::getValue)
+//                .orElse(0);
+//
+//        System.out.println("max2 = " + max2);
 
         //then
         assertThat(max).isEqualTo(1000);
@@ -164,10 +184,19 @@ public class Chapter5_실전연습 {
         List<Transaction> transactions = createTransactionData();
 
         //when
+        //reduce를 활용한 최소값 구하기
         Integer min = transactions.stream()
                 .map(Transaction::getValue)
                 .reduce(Math::min)
                 .orElse(0);
+
+        //min()을 활용한 최소값 구하기
+//        Integer min2 = transactions.stream()
+//                .min(comparing(Transaction::getValue))
+//                .map(Transaction::getValue)
+//                .orElse(0);
+//
+//        System.out.println("min2 = " + min2);
 
         //then
         assertThat(min).isEqualTo(300);
