@@ -10,7 +10,7 @@ Part Ⅰ 기초
 - Chapter 3 - 람다 표현식
 
 Part Ⅱ 함수형 데이터 처리
-- Chapter 4 - 스트림 소개
+- Chapter 4 - [스트림 소개](https://magical52.tistory.com/97)
 - Chapter 5 - 스트림 활용
 - Chapter 6 - 스트림으로 데이터 수집
 - Chapter 7 - 병렬 데이터 처리와 성능
