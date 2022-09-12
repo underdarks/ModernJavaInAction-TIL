@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.IntSupplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -96,21 +97,6 @@ public class Chapter5_2 {
         assertThat(evenNumbers2.size()).isEqualTo(49);
     }
 
-    //    @DisplayName("피타고라스 수 ")
-//    @Test
-    public void t() {
-        //given
-        int a = 2;
-
-//        Stream.of(IntStream.rangeClosed(1,100))
-//                .filter(b-> Math.sqrt((a*a)+(b*b)) % 1 == 0)
-
-
-        //when
-
-
-        //then
-    }
 
     @DisplayName("값으로 스트림 만들기")
     @Test
@@ -176,21 +162,90 @@ public class Chapter5_2 {
     }
 
     private String getPath() {
-        String path="C:\\Users\\magic\\Desktop\\me\\dev\\102.ModernJavaInAction\\practice\\src\\test\\java\\modernjavainaction\\practice\\data.txt";
+        String path = "C:\\Users\\magic\\Desktop\\me\\dev\\102.ModernJavaInAction\\practice\\src\\test\\java\\modernjavainaction\\practice\\data.txt";
         return path;
     }
 
     @DisplayName("함수로 무한 스트림 만들기")
     @Test
-    public void makeInfStreamWithFunc() {
+    public void createInfStreamWithFunc() {
         //given
-        Stream.iterate(0, n -> n + 2);
+        Stream<Integer> infStream = Stream.iterate(0, n -> n + 2)   //언바운드 스트림(요청할 떄마다 값을 생산하여 무한 스트림을 만듬)
+                .limit(10);
 
 
         //when
+        //then
+        infStream.forEach(System.out::println);
+    }
+
+
+    @DisplayName("무한스트림을 활용한 피보나치 수열 집합 만들기")
+    @Test
+    public void createFibonaciWithInfStream() {
+        //given
+        Stream<int[]> fibo = Stream.iterate(new int[]{0, 1}, v -> new int[]{v[1], v[0] + v[1]})
+                .limit(20);
+
+        //then
+        fibo.forEach(t -> System.out.println("(" + t[0] + "," + t[1] + ")"));
+    }
+
+
+    @DisplayName("iter 프레디케이트")
+    @Test
+    public void iterPredicate(){
+        //given
+        Stream.iterate(0,n-> n < 20, n-> n+4)
+                .forEach(System.out::println);
+
+//        Stream.iterate(0, n-> n+4)
+//                .filter(n-> n<20)
+//                .forEach(System.out::println);
+
+        Stream.iterate(0, n-> n+4)
+                .takeWhile(n-> n<20)    //쇼트서킷을 지원하는 takeWhile 활용
+                .forEach(System.out::println);
+
+    }
+
+    @DisplayName("generate을 활용한 무한스트림")
+    @Test
+    public void generate(){
+        //given
+        Stream.generate(Math::random)   //generate는 샹산된 값을 연속적으로 계산하지 않는다. 그래서
+                .limit(5)
+                .forEach(System.out::println);
+    }
+
+    @DisplayName("generate을 활용한 피보나치 수열 집합")
+    @Test
+    public void createFibonaciWithgenerate(){
+
+        /**
+         * iterate를 사용한것과 다르게 가변상태 객체로 만들어서 사용한다.(iterate는 불변상태 유지)
+         * 스틈림을 병렬로 처리할 때는 불변 상태 기법을 사용해야한다!
+         * 무한 스트림은 정렬하거나 리듀스를 할 수 없다.
+         */
+        //given
+        IntSupplier fibo = new IntSupplier() {
+            private int prev=0;
+            private int cur=1;
+
+            @Override
+            public int getAsInt() {
+                int oldPrveis=this.prev;
+                int nextValue=this.prev+this.cur;
+                this.prev=this.cur;
+                this.cur=nextValue;
+                return oldPrveis;
+            }
+        };
 
 
         //then
+        IntStream.generate(fibo)
+                .limit(20)
+                .forEach(System.out::println);
     }
-
 }
