@@ -393,13 +393,6 @@ public class Chapter5_1 {
         assertThat(result).isEqualTo(9);
     }
 
-
-    /**
-     * 리듀싱
-     * -> 모든 스트림 요소를 처리해서 값으로 도출하는 과정
-     * -> FP에서는 종이를 작은 조각이 될 떄까지 반복해서 접는 것과 비슿해서 "폴드"라 부름
-     */
-
     @DisplayName("리듀싱을 적용하기 전 리스트의 모든 요소 더하기")
     @Test
     public void sumWithStreamSumMethod() {
@@ -417,6 +410,11 @@ public class Chapter5_1 {
         assertThat(sum).isEqualTo(15);
     }
 
+    /**
+     * 리듀싱
+     * -> 모든 스트림 요소를 처리해서 값으로 도출하는 과정
+     * -> FP에서는 종이를 작은 조각이 될 떄까지 반복해서 접는 것과 비슿해서 "폴드"라 부름
+     */
     @DisplayName("리듀싱을 적용 후 리스트의 모든 요소 더하기")
     @Test
     public void sumWithReducing() {
@@ -431,12 +429,8 @@ public class Chapter5_1 {
         Integer sum = list.stream()
                 .reduce(0, (a, b) -> a + b);
 
-        //메소드 참조
-//        Integer sum = list.stream()
-//                .reduce(0, Integer::sum);
-
-
         System.out.println("sum = " + sum);
+
         //then
         assertThat(sum).isEqualTo(15);
     }
