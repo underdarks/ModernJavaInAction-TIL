@@ -22,7 +22,6 @@ public class Chapter4 {
     @Test
     public void getlowCaloriesFoodName() {
         //given
-        Collection<Dish> dishes = getDishList();
         Instant start = Instant.now();
 
         //when
@@ -48,7 +47,6 @@ public class Chapter4 {
     @Test
     public void getlowCaloriesFoodNameWithParallelStream() {
         //given
-        Collection<Dish> dishes = getDishList();
         Instant start = Instant.now();
 
         //when
@@ -71,7 +69,6 @@ public class Chapter4 {
     @Test
     public void getHighCaloriesFoodName() {
         //given
-        Collection<Dish> dishes = getDishList();
         Instant start = Instant.now();
 
         //when
@@ -112,8 +109,6 @@ public class Chapter4 {
     @DisplayName("컬렉션 외부 반복")
     @Test
     public void collectionExternalLoop(){
-        Collection<Dish> dishes = getDishList();
-
         //외부 반복
         for (Dish dish : dishes) {
             System.out.println("dish.getName() = " + dish.getName());
@@ -123,8 +118,6 @@ public class Chapter4 {
     @DisplayName("컬렉션 내부 반복")
     @Test
     public void collectionInternalLoop(){
-        Collection<Dish> dishes = getDishList();
-
         Iterator<Dish> iterator = dishes.iterator();
         while(iterator.hasNext()){  //명시적 반복
             System.out.println("iterator = " + iterator.next().getName());
@@ -146,7 +139,6 @@ public class Chapter4 {
     @Test
     public void quiz_4_1(){
         //리팩토링 전 코드
-        Collection<Dish> dishes = getDishList();
         List<String> highCaloriesDishes=new ArrayList<>();
         Iterator<Dish> iterator = dishes.iterator();
         while (iterator.hasNext()){
@@ -176,7 +168,6 @@ public class Chapter4 {
     @DisplayName("중간 연산")
     @Test
     public void intermediateOperation(){
-        Collection<Dish> dishes = getDishList();
         List<String> names = dishes.stream()
                 .filter(dish -> {
                     System.out.println("filtering = " + dish.getName());

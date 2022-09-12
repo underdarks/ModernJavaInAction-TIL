@@ -18,8 +18,6 @@ public class Chapter5_1 {
     @Test
     public void FilterByVegetarianDishWithPredicate() {
         //given
-        Collection<Dish> dishes = getDishList();
-
         //when
         List<Dish> vegetarianDishes = dishes.stream()
                 .filter(Dish::isVegetarian)             //프레디케이트(불리언을 반환하는 함수) 필터링
@@ -63,7 +61,6 @@ public class Chapter5_1 {
     @Test
     public void findUnder320caloriesDishWithTakeWhile() {
         //given
-        Collection<Dish> specialMenu = getSpecialMenu();
 
         //when
         List<Dish> under320CaloriesDishes = specialMenu.stream()
@@ -87,7 +84,6 @@ public class Chapter5_1 {
     @Test
     public void findOver320caloriesDishWithDropWhile() {
         //given
-        Collection<Dish> specialMenu = getSpecialMenu();
 
         //when
         List<Dish> over320CaloriesDishes = specialMenu.stream()
@@ -107,8 +103,6 @@ public class Chapter5_1 {
     @Test
     public void streamReduction() {
         //given
-        Collection<Dish> specialMenu = getSpecialMenu();
-
 
         //when
         List<Dish> over300CaloriesDishes = specialMenu.stream()
@@ -130,9 +124,6 @@ public class Chapter5_1 {
     @Test
     public void streamSkip() {
         //given
-        Collection<Dish> specialMenu = getSpecialMenu();
-
-
         //when
         List<Dish> skipDishes = specialMenu.stream()
                 .filter(dish -> dish.getCalories() > 300)
@@ -151,8 +142,6 @@ public class Chapter5_1 {
     @Test
     public void quiz_5_1() {
         //given
-        Collection<Dish> dishes = getDishList();
-
         //when
         List<Dish> twoMeatDishes = dishes.stream()
                 .takeWhile(dish -> dish.getFoodType().equals(Dish.FoodType.MEAT))
@@ -188,8 +177,6 @@ public class Chapter5_1 {
     @Test
     public void getFoodNameLength() {
         //given
-        Collection<Dish> dishes = getDishList();
-
         //when
         List<Integer> lengths = dishes.stream()
                 .map(dish -> dish.getName().length())
@@ -261,7 +248,8 @@ public class Chapter5_1 {
         list2.forEach(System.out::println);
 
         //3번째 방법
-        List<Integer> list3 = Arrays.asList(1, 2, 3, 4, 5).stream()
+        List<Integer> list3 = Arrays.asList(1, 2, 3, 4, 5)
+                .stream()
                 .map(num -> num * num)
                 .collect(toList());
 
@@ -311,8 +299,6 @@ public class Chapter5_1 {
     @Test
     public void isVegetarainFoodAtLeastOne() {
         //given
-        Collection<Dish> dishes = getDishList();
-
         //when
         boolean result = dishes.stream()
                 .anyMatch(Dish::isVegetarian);  //boolean 반환하는 최종연산
@@ -326,8 +312,6 @@ public class Chapter5_1 {
     @Test
     public void isAllFoodUnder1000Kcal() {
         //given
-        Collection<Dish> dishes = getDishList();
-
         //when
         boolean result = dishes.stream()
                 .allMatch(dish -> dish.getCalories() <= 1000);
@@ -342,8 +326,6 @@ public class Chapter5_1 {
     @Test
     public void isAllFoodOver1000Kcal() {
         //given
-        Collection<Dish> dishes = getDishList();
-
         //when
         boolean result = dishes.stream()
                 .noneMatch(dish -> dish.getCalories() >= 1000);
@@ -357,8 +339,6 @@ public class Chapter5_1 {
     @Test
     public void ElementSearchByfindAny() {
         //given
-        Collection<Dish> dishes = getDishList();
-
         //when
         dishes.stream()
                 .filter(Dish::isVegetarian)
@@ -377,7 +357,6 @@ public class Chapter5_1 {
     @DisplayName("첫번째 요소 찾기")
     @Test
     public void findFirstElement() {
-
         //given
         List<Integer> list = Arrays.asList(1, 2, 3, 4, 6);
 

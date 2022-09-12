@@ -1,8 +1,5 @@
 package modernjavainaction.practice;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -12,6 +9,9 @@ import static modernjavainaction.practice.Dish.builder;
  * 실습에 필요한 데이터 생성 및 관리하는 클래스
  */
 public class DataManager {
+
+    public static final Collection<Dish> dishes = getDishList();
+    public static final Collection<Dish> specialMenu = getSpecialMenu();
 
     /**
      * Dish 인스턴스 생성

@@ -22,8 +22,6 @@ public class Chapter5_2 {
     @Test
     public void numericStream() {
         //given
-        Collection<Dish> dishes = getDishList();
-
 
         /**
          * Stream<T>를 반환하면 sum 메셔드 사용 불가
@@ -47,7 +45,6 @@ public class Chapter5_2 {
     @Test
     public void restoreToObjStream() {
         //given
-        Collection<Dish> dishes = getDishList();
 
         //when
         IntStream intStream = dishes.stream().mapToInt(Dish::getCalories);  //stream -> IntStream
@@ -62,8 +59,6 @@ public class Chapter5_2 {
     @Test
     public void optionalInt() {
         //given
-        Collection<Dish> dishes = getDishList();
-
         //when
         int max = dishes.stream()
                 .mapToInt(Dish::getCalories)
