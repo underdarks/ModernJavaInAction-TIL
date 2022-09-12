@@ -202,7 +202,4 @@ public class Chapter5_실전연습 {
         assertThat(min).isEqualTo(300);
     }
 
-
-
-
 }

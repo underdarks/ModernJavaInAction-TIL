@@ -36,7 +36,7 @@ public class Chapter5_1 {
 
     @DisplayName("고유 요소로 이루어진 스트림 짝수 필터링")
     @Test
-    public void ilterEvenNumber() {
+    public void filterEvenNumber() {
         //given
         List<Integer> numbers = Arrays.asList(1, 2, 1, 3, 3, 2, 4);
 

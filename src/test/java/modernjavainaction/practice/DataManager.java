@@ -13,8 +13,9 @@ import static modernjavainaction.practice.Dish.builder;
  */
 public class DataManager {
 
-    @DisplayName("Dish 클래스 생성")
-    @Test
+    /**
+     * Dish 인스턴스 생성
+     */
     public static Dish createDishInstacne(String name, boolean vegetarian, int calories, Dish.FoodType foodType) {
         return builder()
                 .name(name)
@@ -24,6 +25,9 @@ public class DataManager {
                 .build();
     }
 
+    /**
+     * Dish List 반환
+     */
     public static Collection<Dish> getDishList() {
         return Arrays.asList(
                 createDishInstacne("pork", false, 800, Dish.FoodType.MEAT),
