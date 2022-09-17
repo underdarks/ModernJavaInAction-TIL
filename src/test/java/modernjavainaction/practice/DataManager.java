@@ -10,7 +10,7 @@ import static modernjavainaction.practice.Dish.builder;
  */
 public class DataManager {
 
-    public static final Collection<Dish> dishes = getDishList();
+    public static final Collection<Dish> menu = getDishList();
     public static final Collection<Dish> specialMenu = getSpecialMenu();
 
     /**

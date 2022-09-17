@@ -26,13 +26,13 @@ public class Chapter5_2 {
         /**
          * Stream<T>를 반환하면 sum 메셔드 사용 불가
          */
-        dishes.stream()
+        menu.stream()
                 .map(Dish::getCalories);
 
         /**
          * IntStream, DoubleStream, LongStream은 기본형 특화 스트림 API를 제공한다
          */
-        Integer totalCalories = dishes.stream()
+        Integer totalCalories = menu.stream()
                 .mapToInt(Dish::getCalories)//Stream<Integer>가 아닌 IntStream 반환
                 .sum();
 
@@ -47,7 +47,7 @@ public class Chapter5_2 {
         //given
 
         //when
-        IntStream intStream = dishes.stream().mapToInt(Dish::getCalories);  //stream -> IntStream
+        IntStream intStream = menu.stream().mapToInt(Dish::getCalories);  //stream -> IntStream
         Stream<Integer> stream = intStream.boxed(); //IntStream -> Stream<Integer>
 
         //then
@@ -60,7 +60,7 @@ public class Chapter5_2 {
     public void optionalInt() {
         //given
         //when
-        int max = dishes.stream()
+        int max = menu.stream()
                 .mapToInt(Dish::getCalories)
                 .max()  //값이 존재하지 않을 경우를 대비해 Optional을 반환한다
                 .orElse(1);

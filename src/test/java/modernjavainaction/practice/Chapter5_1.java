@@ -19,7 +19,7 @@ public class Chapter5_1 {
     public void FilterByVegetarianDishWithPredicate() {
         //given
         //when
-        List<Dish> vegetarianDishes = dishes.stream()
+        List<Dish> vegetarianDishes = menu.stream()
                 .filter(Dish::isVegetarian)             //프레디케이트(불리언을 반환하는 함수) 필터링
                 .collect(toList());
 
@@ -143,7 +143,7 @@ public class Chapter5_1 {
     public void quiz_5_1() {
         //given
         //when
-        List<Dish> twoMeatDishes = dishes.stream()
+        List<Dish> twoMeatDishes = menu.stream()
                 .takeWhile(dish -> dish.getFoodType().equals(Dish.FoodType.MEAT))
                 .limit(2)
                 .collect(toList());
@@ -178,7 +178,7 @@ public class Chapter5_1 {
     public void getFoodNameLength() {
         //given
         //when
-        List<Integer> lengths = dishes.stream()
+        List<Integer> lengths = menu.stream()
                 .map(dish -> dish.getName().length())
                 .collect(toList());
 
@@ -300,7 +300,7 @@ public class Chapter5_1 {
     public void isVegetarainFoodAtLeastOne() {
         //given
         //when
-        boolean result = dishes.stream()
+        boolean result = menu.stream()
                 .anyMatch(Dish::isVegetarian);  //boolean 반환하는 최종연산
 
         //then
@@ -313,7 +313,7 @@ public class Chapter5_1 {
     public void isAllFoodUnder1000Kcal() {
         //given
         //when
-        boolean result = dishes.stream()
+        boolean result = menu.stream()
                 .allMatch(dish -> dish.getCalories() <= 1000);
 
 
@@ -327,7 +327,7 @@ public class Chapter5_1 {
     public void isAllFoodOver1000Kcal() {
         //given
         //when
-        boolean result = dishes.stream()
+        boolean result = menu.stream()
                 .noneMatch(dish -> dish.getCalories() >= 1000);
 
 
@@ -340,7 +340,7 @@ public class Chapter5_1 {
     public void ElementSearchByfindAny() {
         //given
         //when
-        dishes.stream()
+        menu.stream()
                 .filter(Dish::isVegetarian)
                 .findAny()
                 .ifPresent(System.out::println);
@@ -351,7 +351,7 @@ public class Chapter5_1 {
 
     /**
      * findFirst와 findAny는 왜, 언제 사용하나?
-     * ->병렬 실행에서는 첫 번째 요소를 찾기 어렵다. 반환 순서가 상관 없다면 Parallel Stream에서는 제약이 적은 findAny가 더 작합하다
+     * ->병렬 실행에서는 첫 번째 요소를 찾기 어렵다. 반환 순서가 상관 없다면 Parallel Stream에서는 제약이 적은 findAny가 더 적합하다
      * ->순차 실행에서는 findFirst를 활용하여 조건에 부합한 첫번째 요소를 찾을 때 유용하다
      */
     @DisplayName("첫번째 요소 찾기")

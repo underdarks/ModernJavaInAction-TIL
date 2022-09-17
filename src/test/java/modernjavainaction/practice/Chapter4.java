@@ -26,7 +26,7 @@ public class Chapter4 {
 
         //when
         //400칼로리보다 적은 음식들의 이름
-        List<String> lowCaloriesDishNames = dishes.stream()
+        List<String> lowCaloriesDishNames = menu.stream()
                 .filter(dish -> dish.getCalories() < 400)               //칼로리가 400이하인 음식들만 필터링
                 .sorted(Comparator.comparing(Dish::getCalories))        //칼로리 순으로 정렬(오름차순)
                 .map(Dish::getName)                                     //칼로리의 이름만 추출
@@ -51,7 +51,7 @@ public class Chapter4 {
 
         //when
         //병렬 처리
-        List<String> lowCaloriesDishNames = dishes.parallelStream()
+        List<String> lowCaloriesDishNames = menu.parallelStream()
                 .filter(dish -> dish.getCalories() < 400)
                 .sorted(Comparator.comparing(Dish::getCalories))
                 .map(Dish::getName)
@@ -72,7 +72,7 @@ public class Chapter4 {
         Instant start = Instant.now();
 
         //when
-        List<String> highCaloriesFoodNames = dishes.stream()
+        List<String> highCaloriesFoodNames = menu.stream()
                 .filter(dish -> dish.getCalories() > 300)       //300 칼로리 이상인 음식들 필터
                 .map(Dish::getName)                             //요리명 추출
                 .limit(3)                                       //상위 3개만 선택
@@ -110,7 +110,7 @@ public class Chapter4 {
     @Test
     public void collectionExternalLoop(){
         //외부 반복
-        for (Dish dish : dishes) {
+        for (Dish dish : menu) {
             System.out.println("dish.getName() = " + dish.getName());
         }
     }
@@ -118,7 +118,7 @@ public class Chapter4 {
     @DisplayName("컬렉션 내부 반복")
     @Test
     public void collectionInternalLoop(){
-        Iterator<Dish> iterator = dishes.iterator();
+        Iterator<Dish> iterator = menu.iterator();
         while(iterator.hasNext()){  //명시적 반복
             System.out.println("iterator = " + iterator.next().getName());
         }
@@ -140,7 +140,7 @@ public class Chapter4 {
     public void quiz_4_1(){
         //리팩토링 전 코드
         List<String> highCaloriesDishes=new ArrayList<>();
-        Iterator<Dish> iterator = dishes.iterator();
+        Iterator<Dish> iterator = menu.iterator();
         while (iterator.hasNext()){
             Dish dish = iterator.next();
 
@@ -154,7 +154,7 @@ public class Chapter4 {
         }
 
         //리팩토링 후 코드
-        List<String> collect = dishes.stream()
+        List<String> collect = menu.stream()
                 .filter(dish -> dish.getCalories() > 300)   //중간 연산
                 .map(Dish::getName)                         //중간 연산
                 .collect(Collectors.toList());              //최종 연산
@@ -168,7 +168,7 @@ public class Chapter4 {
     @DisplayName("중간 연산")
     @Test
     public void intermediateOperation(){
-        List<String> names = dishes.stream()
+        List<String> names = menu.stream()
                 .filter(dish -> {
                     System.out.println("filtering = " + dish.getName());
                     return dish.getCalories() > 300;
