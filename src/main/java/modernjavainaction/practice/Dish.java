@@ -12,7 +12,7 @@ public class Dish {
     private String name;
     private boolean vegetarian;
     private int calories;
-    private FoodType foodType;
+    private FoodType type;
 
     public enum FoodType {
         MEAT,

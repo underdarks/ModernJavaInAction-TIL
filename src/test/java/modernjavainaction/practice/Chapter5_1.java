@@ -144,7 +144,7 @@ public class Chapter5_1 {
         //given
         //when
         List<Dish> twoMeatDishes = menu.stream()
-                .takeWhile(dish -> dish.getFoodType().equals(Dish.FoodType.MEAT))
+                .takeWhile(dish -> dish.getType().equals(Dish.FoodType.MEAT))
                 .limit(2)
                 .collect(toList());
 

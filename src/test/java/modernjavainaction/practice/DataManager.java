@@ -1,7 +1,6 @@
 package modernjavainaction.practice;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
 import static modernjavainaction.practice.Dish.builder;
 
@@ -13,6 +12,9 @@ public class DataManager {
     public static final Collection<Dish> menu = getDishList();
     public static final Collection<Dish> specialMenu = getSpecialMenu();
 
+    public static final Map<String, List<String>> dishTags= initMap();
+
+
     /**
      * Dish 인스턴스 생성
      */
@@ -21,7 +23,7 @@ public class DataManager {
                 .name(name)
                 .vegetarian(vegetarian)
                 .calories(calories)
-                .foodType(foodType)
+                .type(foodType)
                 .build();
     }
 
@@ -58,8 +60,32 @@ public class DataManager {
     }
 
     /**
-     *
+     * 칼로리 수준 Type
      */
+    public enum CaloricLevel {
+        DIET,
+        NORAML,
+        FAT
+    }
+
+    public static Map initMap(){
+        HashMap<Object, Object> map = new HashMap<>();
+
+        map.put("pork",Arrays.asList("greasy","salty"));
+        map.put("beef",Arrays.asList("salty","roasted"));
+        map.put("chicken",Arrays.asList("fried","crisp"));
+
+        map.put("french",Arrays.asList("greasy","fried"));
+        map.put("rice",Arrays.asList("light","natural"));
+        map.put("season fruit",Arrays.asList("fresh","natural"));
+        map.put("pizza",Arrays.asList("tasty","salty"));
+
+        map.put("prawns",Arrays.asList("tasty","roasted"));
+        map.put("salmon",Arrays.asList("delicious","fresh"));
+
+        return map;
+    }
+
 
 
 }
