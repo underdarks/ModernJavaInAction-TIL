@@ -1,5 +1,6 @@
 package modernjavainaction.practice;
 
+import org.apache.logging.log4j.util.PropertySource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +10,8 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 import static modernjavainaction.practice.DataManager.*;
+import static modernjavainaction.practice.DataManager.CaloricLevel.*;
+import static modernjavainaction.practice.Dish.*;
 import static modernjavainaction.practice.Dish.FoodType.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -17,7 +20,7 @@ public class Chapter6_1 {
 
     @DisplayName("counting() 활용한 요리 계수 구하기")
     @Test
-    public void t() {
+    public void getFoodCount() {
         //given
 //        Long collect = menu.stream().count();
 
@@ -186,7 +189,7 @@ public class Chapter6_1 {
 
     @DisplayName("컬렉셤 프레임워크 유연성을 활용한 음식의 최대 칼로리 구하기")
     @Test
-    public void collectionFWFlexible(){
+    public void collectionFWFlexible() {
         /**
          * 자바 8의 함수형 프로그래밍에서는 하나의 연산을 다양한 방법으로 해결할 수 있다
          * 또한 스트림 인터페이스에서 직접 제공하는 메서드를 이용하는것에 비해 컬렉터(collect)를 이용하는 코드가 더 복잡한 사실도 보여줌
@@ -220,7 +223,7 @@ public class Chapter6_1 {
 
     @DisplayName("리듀싱으로 문자열 연결하기")
     @Test
-    public void quiz_6_1(){
+    public void quiz_6_1() {
         //given
         String shortMenu = menu.stream()
                 .map(Dish::getName)
@@ -242,7 +245,7 @@ public class Chapter6_1 {
         String shortMenu3 = menu.stream()
                 .collect(reducing("",   //초기값
                         Dish::getName,         //변환 함수
-                        (d1,d2) -> d1+d2));    //합계 함수
+                        (d1, d2) -> d1 + d2));    //합계 함수
 
         //then
         assertThat(shortMenu).isEqualTo(shortMenu1).isEqualTo(shortMenu3);
@@ -251,9 +254,9 @@ public class Chapter6_1 {
 
     @DisplayName("groupingBy를 활용한 음식 종류별 그룹화")
     @Test
-    public void groupingByFoodType(){
+    public void groupingByFoodType() {
         //given
-        Map<Dish.FoodType, List<Dish>> dishesByType = menu.stream()
+        Map<FoodType, List<Dish>> dishesByType = menu.stream()
                 .collect(groupingBy(Dish::getType));
 
         //when
@@ -265,14 +268,15 @@ public class Chapter6_1 {
 
     @DisplayName("칼로리 범위 별 칼로리 level 나누기")
     @Test
-    public void divideCalLevelByRange(){
+    public void divideCalLevelByRange() {
         //given
         Map<CaloricLevel, List<Dish>> dishesByCalroricLevel = menu.stream()
                 .collect(
                         groupingBy(dish -> {
-                            if (dish.getCalories() <= 400) return CaloricLevel.DIET;
-                            else if (dish.getCalories() <= 700) return CaloricLevel.NORAML;
-                            else return CaloricLevel.FAT;}
+                                    if (dish.getCalories() <= 400) return DIET;
+                                    else if (dish.getCalories() <= 700) return NORAML;
+                                    else return FAT;
+                                }
                         )  //칼로리 범위 별 칼로리 level 설정
                 );
 
@@ -285,13 +289,13 @@ public class Chapter6_1 {
 
     @DisplayName("Filter와 grouping을 활용한 500 칼로리가 넘는 음식 조회")
     @Test
-    public void find500CalOverDishesWithFilterAndGrouping(){
+    public void find500CalOverDishesWithFilterAndGrouping() {
         /**
          * Filter를 사용해서 그룹화 해버리면 Diet 그룹이 없어지게 된다.
          *  => 즉, Map에서 해당 키 자체가 사라져서 그룹 데이터를 확인할 수 없다. 
          */
         //given
-        Map<Dish.FoodType, List<Dish>> caloricDishesByType = menu.stream()
+        Map<FoodType, List<Dish>> caloricDishesByType = menu.stream()
                 .filter(dish -> dish.getCalories() > 500)
                 .collect(groupingBy(Dish::getType));
 
@@ -304,14 +308,14 @@ public class Chapter6_1 {
 
     @DisplayName("collect(grouping,filtering)을 활용한 500 칼로리가 넘는 음식 조회")
     @Test
-    public void find500CalOverDishesWithcollect(){
+    public void find500CalOverDishesWithcollect() {
         /**
          *  위의 코드와 다르게
          *  아래 코드를 실행했을 때 Fish 타입이 필터링이 되었더라도 map에 key로 존재하게 된다.
          *   => 즉, 필터링이 되었더라도 그룹(key)이 사라지진 않는다.
          */
         //given
-        Map<Dish.FoodType, List<Dish>> caloricDishesByType = menu.stream()
+        Map<FoodType, List<Dish>> caloricDishesByType = menu.stream()
                 .collect(groupingBy(
                                 Dish::getType,
                                 filtering(dish -> dish.getCalories() > 500, toList())
@@ -327,9 +331,9 @@ public class Chapter6_1 {
 
     @DisplayName("mapping을 활용한 그룹화 된 요소 변환하는 작업")
     @Test
-    public void transformElementWithMapping(){
+    public void transformElementWithMapping() {
         //given
-        Map<Dish.FoodType, List<String>> dishNamesByType = menu.stream()
+        Map<FoodType, List<String>> dishNamesByType = menu.stream()
                 .collect(groupingBy(Dish::getType, mapping(Dish::getName, toList())));  //type별 그룹화 후 음식 이름 추출
 
         //when
@@ -341,16 +345,16 @@ public class Chapter6_1 {
 
     @DisplayName("grouping-flatMapping을 활용한 태그 추출")
     @Test
-    public void findTagWithGroupingAndFlatMapping(){
+    public void findTagWithGroupingAndFlatMapping() {
         //given
-        Map<Dish.FoodType, Set<String>> dishNamesByType = menu.stream()
+        Map<FoodType, Set<String>> dishNamesByType = menu.stream()
                 .collect(groupingBy(
                         Dish::getType,
                         flatMapping(dish -> dishTags.get(dish.getName()).stream(), toSet()))
                 );
 
         //when
-        dishNamesByType.forEach((foodType, set) -> System.out.println("foodType = " + foodType + ", set = " + set));
+        dishNamesByType.forEach((foodType, set) -> System.out.println("foodType = " + foodType + ", tag = " + set));
 
         //then
         assertThat(dishNamesByType.get(FISH).size()).isEqualTo(4);
@@ -358,36 +362,37 @@ public class Chapter6_1 {
 
     @DisplayName("다수준 그룹화 예시")
     @Test
-    public void groupingMultiLevel(){
+    public void groupingMultiLevel() {
 
         /**
          * 음식별로 그룹화 후 그 그룹에서 칼로리별로 또 그룹화 한다.
          */
         //given
-        Map<Dish.FoodType, Map<CaloricLevel, List<Dish>>> dishesByTypeCaloricLevel = menu.stream()
+        Map<FoodType, Map<CaloricLevel, List<Dish>>> dishesByTypeCaloricLevel = menu.stream()
                 .collect(groupingBy(
                         Dish::getType,      //첫 번째 분류 함수
                         groupingBy(dish -> {    // 두번째 분류 함수
                             if (dish.getCalories() <= 400)
-                                return CaloricLevel.DIET;
+                                return DIET;
                             else if (dish.getCalories() <= 700)
-                                return CaloricLevel.NORAML;
-                            else return CaloricLevel.FAT;
+                                return NORAML;
+                            else return FAT;
                         })
                 ));
 
 
         //when
-        dishesByTypeCaloricLevel.forEach((foodType, caloricLevelListMap) -> System.out.println("foodType = " + foodType + ", " +caloricLevelListMap.toString()));
+        dishesByTypeCaloricLevel.forEach((foodType, caloricLevelListMap) -> System.out.println("foodType = " + foodType + ", " + caloricLevelListMap.toString()));
 
         //then
+        assertThat(dishesByTypeCaloricLevel.size()).isEqualTo(3);
     }
 
     @DisplayName("종류별 요리의 수 구하기")
     @Test
-    public void findNumofDishesType(){
+    public void findNumofDishesType() {
         //given
-        Map<Dish.FoodType, Long> typesCount = menu.stream()
+        Map<FoodType, Long> typesCount = menu.stream()
                 .collect(groupingBy(Dish::getType, counting()));
 
         //when
@@ -400,9 +405,9 @@ public class Chapter6_1 {
 
     @DisplayName("종류별 요리의 총 칼로리 구하기")
     @Test
-    public void findTotalCalTypeOfDish(){
+    public void findTotalCalTypeOfDish() {
         //given
-        Map<Dish.FoodType, Integer> totalCalTypeDish = menu.stream()
+        Map<FoodType, Integer> totalCalTypeDish = menu.stream()
                 .collect(groupingBy(Dish::getType, summingInt(Dish::getCalories)));
 
         //when
@@ -415,12 +420,12 @@ public class Chapter6_1 {
 
     @DisplayName("요리 종류별 가장 높은 칼로리를 가진 요리 찾기")
     @Test
-    public void findHighestCalFoodByDishType(){
+    public void findHighestCalFoodByDishType() {
         //given
-        Map<Dish.FoodType, Optional<Dish>> highestCalFoodByType = menu.stream()
+        Map<FoodType, Optional<Dish>> highestCalFoodByType = menu.stream()
                 .collect(groupingBy(
                                 Dish::getType,
-                                maxBy(Comparator.comparingInt(Dish::getCalories))
+                                maxBy(Comparator.comparingInt(Dish::getCalories))   //maxBy메서드와 comparingInt를 활용한 칼로리 비교
                         )
                 );
 
@@ -431,5 +436,77 @@ public class Chapter6_1 {
         //then
         assertThat(highestCalFoodByType.get(FISH).get().getName().contains("salmon")).isTrue();
     }
+
+    @DisplayName("각 서브그룹에서 가장 칼로리가 높은 요리 찾기")
+    @Test
+    public void findHighestCalFoodByInSubGroup() {
+        //given
+        Map<FoodType, Dish> highestCalFoods = menu.stream()
+                .collect(groupingBy(
+                                Dish::getType,  //분류 기준
+                                collectingAndThen(   //collectingAndThen으로 적용할 컬렉터와 변환 함수를 인수로 받아 다른 컬렉터를 반환한다.
+                                        maxBy(Comparator.comparingInt(Dish::getCalories)),
+                                        Optional::get   //변환 함수
+                                )
+                        )
+
+                );
+
+
+        //when
+        highestCalFoods.forEach((name, dishes) -> System.out.println("name = " + name + ", dish=" + dishes.toString()));
+
+
+        //then
+        assertThat(highestCalFoods.get(FISH).getName()).isEqualTo("salmon");
+    }
+
+
+    @DisplayName("각 요리 형식에 존재하는 모든 CaloricLevel 구하기")
+    @Test
+    public void getCalLevelByDishType() {
+        //given
+        Map<FoodType, Set<CaloricLevel>> foodsbyType = menu.stream()
+                .collect(groupingBy(
+                                Dish::getType,
+                                mapping(dish -> {   //Dish -> CaloricLevel로 매핑해준다
+                                            if (dish.getCalories() <= 400) return DIET;
+                                            else if (dish.getCalories() <= 700) return NORAML;
+                                            else return FAT;
+                                        }
+                                        , toSet()
+                                )
+                        )
+                );
+
+        //when
+        foodsbyType.forEach((foodType, caloricLevels) -> System.out.println("foodType = " + foodType + ", caloricLevel = " + caloricLevels));
+
+
+        //then
+        assertThat(foodsbyType.get(FISH).contains(DIET)).isTrue();
+    }
+
+    @DisplayName("toCollection 활용한 각 요리 형식에 존재하는 모든 CaloricLevel 구하기")
+    @Test
+    public void getCalLevelByDishTypeBytoCollection() {
+        //given
+        Map<FoodType, HashSet<CaloricLevel>> caloricLevelsByType = menu.stream()
+                .collect(groupingBy(
+                                Dish::getType,
+                                mapping(dish -> {
+                                    if (dish.getCalories() <= 400) return DIET;
+                                    else if (dish.getCalories() <= 700) return NORAML;
+                                    else return FAT;
+                                }, toCollection(HashSet::new))
+                        )
+                );
+
+        //when
+        caloricLevelsByType.forEach((foodType, caloricLevels) -> System.out.println("foodType = " + foodType + " calLevel = " + caloricLevels));
+
+        //then
+    }
+
 
 }
