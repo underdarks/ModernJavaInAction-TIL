@@ -1,27 +1,30 @@
-package modernjavainaction.practice;
+package modernjavainaction.practice.Chapter6;
 
-import org.assertj.core.api.Assertions;
+import modernjavainaction.practice.Dish;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.DataInput;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.*;
-import static modernjavainaction.practice.DataManager.*;
+import static modernjavainaction.practice.Other.DataManager.*;
 import static modernjavainaction.practice.Dish.*;
 import static modernjavainaction.practice.Dish.FoodType.*;
 import static org.assertj.core.api.Assertions.*;
 
-public class Chapter6_2 {
+/**
+ * p 219. 6.4 분할
+ */
+public class Chap_6_4_분할 {
+
+
     /**
-     * p 219. 6.4분할부터 시작~
+     * 6.4 - 분할 (218p)
      */
-
-
     @DisplayName("채식 요리/채식이 아닌 요리 분류")
     @Test
     public void classifyVegetrianFood() {
@@ -38,13 +41,19 @@ public class Chapter6_2 {
                 .collect(toList());
 
         //when
-        partitionedMenu.forEach((isVegetfood, dishes) -> System.out.println("isVegetfood = " + isVegetfood + ", food = " + dishes));
+        partitionedMenu.forEach((isVegetfood, dishes)
+                -> System.out.println("isVegetfood = " + isVegetfood + ", food = " + dishes));
 
         //then
         //채식주의자 음식이 있는지 검증
+
         assertThat(partitionedMenu.get(true).size()).isGreaterThan(0);
+
     }
 
+    /**
+     * 6.4.1 - 분할의 장점 (220p)
+     */
     @DisplayName("채식 요리/채식이 아닌 요리 타입별로 구분")
     @Test
     public void classifyVegetrianFoodByType() {
@@ -57,7 +66,8 @@ public class Chapter6_2 {
                 );  //6.3.1 다수준 그릅화와 비슷
 
         //when
-        vegetrianDishesByType.forEach((isVegetfood, foodTypeListMap) -> System.out.println("isVegetfood = " + isVegetfood + ", foodTypeDish = " + foodTypeListMap));
+        vegetrianDishesByType.forEach((isVegetfood, foodTypeListMap)
+                -> System.out.println("isVegetfood = " + isVegetfood + ", foodTypeDish = " + foodTypeListMap));
 
 
         //then
@@ -65,6 +75,9 @@ public class Chapter6_2 {
         assertThat(vegetrianDishesByType.get(true).get(FISH)).isNull();
     }
 
+    /**
+     * 6.4.1 - 분할의 장점 (220p)
+     */
     @DisplayName("채식/비채식 요리 중 가장 칼로리가 높은 요리 찾기")
     @Test
     public void findHighCalFoodInGroup() {
@@ -80,7 +93,8 @@ public class Chapter6_2 {
                 );
 
         //when
-        highCalFoodinGroupByVegetarian.forEach((isVegetfood, dish) -> System.out.println("isVegetfood = " + isVegetfood + ", food = " + dish));
+        highCalFoodinGroupByVegetarian.forEach((isVegetfood, dish)
+                -> System.out.println("isVegetfood = " + isVegetfood + ", food = " + dish));
 
 
         //then
@@ -88,6 +102,7 @@ public class Chapter6_2 {
     }
 
     /**
+     * 퀴즈 6-2
      * expect : 채식/비채식 으로 분류 후 거기서 다시 칼로리가 500넘는 음식인지 아닌지로 한번 더 분류
      */
     @DisplayName("퀴즈 6-2-1")
@@ -102,7 +117,8 @@ public class Chapter6_2 {
                 );
 
         //when
-        result.forEach((isVegetfood, booleanListMap) -> System.out.println("isVegetfood = " + isVegetfood + ", foods =" + booleanListMap));
+        result.forEach((isVegetfood, booleanListMap)
+                -> System.out.println("isVegetfood = " + isVegetfood + ", foods =" + booleanListMap));
 
 
         //then
@@ -132,6 +148,9 @@ public class Chapter6_2 {
         //then
     }
 
+    /**
+     * expect : 채식/비채식 음식별로 분할된 후 각 음식별 개수 반환
+     */
     @DisplayName("퀴즈 6-2-3")
     @Test
     public void quiz_6_2_3() {
@@ -143,11 +162,38 @@ public class Chapter6_2 {
                 ));
 
         //when
-        result.forEach((isVegetfood, count) -> System.out.println("isVegetfood = " + isVegetfood + ", count = " + count));
+        result.forEach((isVegetfood, count)
+                -> System.out.println("isVegetfood = " + isVegetfood + ", count = " + count));
 
 
         //then
         assertThat(result.get(true)).isEqualTo(4);
+    }
+
+    public boolean isPrimeNum(int num) {
+        return IntStream.range(1, (int) Math.sqrt(num))
+                .noneMatch(i -> (num & i) == 0);
+    }
+
+    /**
+     * 6.4.2 - 숫자를 소수/비소수로 분할 (222p)
+     */
+    @DisplayName("소수와 비소수로 분류하기")
+    @Test
+    public void classifyPrimeOrNotPrimeNum() {
+        //given
+        int n = 100;
+        Map<Boolean, List<Integer>> partitionPrimeNum = IntStream.rangeClosed(2, n)
+                .boxed()
+                .collect(partitioningBy(this::isPrimeNum));
+
+        //when
+        partitionPrimeNum.forEach((isPirme, list)
+                -> System.out.println("isPirme = " + isPirme + ", num = " + list));
+
+
+        //then
+        assertThat(partitionPrimeNum.get(true).contains(2)).isTrue();
     }
 
 }

@@ -1,4 +1,6 @@
-package modernjavainaction.practice;
+package modernjavainaction.practice.Other;
+
+import modernjavainaction.practice.Dish;
 
 import java.util.*;
 
@@ -12,7 +14,7 @@ public class DataManager {
     public static final Collection<Dish> menu = getDishList();
     public static final Collection<Dish> specialMenu = getSpecialMenu();
 
-    public static final Map<String, List<String>> dishTags= initMap();
+    public static final Map<String, List<String>> dishTags= getDishTags();
 
 
     /**
@@ -68,7 +70,10 @@ public class DataManager {
         FAT
     }
 
-    public static Map initMap(){
+    /**
+     * 6장 실습에 필요한 음식별 tag 데이터 생성
+     */
+    public static Map getDishTags(){
         HashMap<Object, Object> map = new HashMap<>();
 
         map.put("pork",Arrays.asList("greasy","salty"));

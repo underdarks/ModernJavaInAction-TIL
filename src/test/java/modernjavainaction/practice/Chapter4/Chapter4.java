@@ -1,6 +1,7 @@
-package modernjavainaction.practice;
+package modernjavainaction.practice.Chapter4;
 
 
+import modernjavainaction.practice.Dish;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static modernjavainaction.practice.DataManager.*;
+import static modernjavainaction.practice.Other.DataManager.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,4 +1,4 @@
-package modernjavainaction.practice;
+package modernjavainaction.practice.Other;
 
 public interface TestInterface {
 

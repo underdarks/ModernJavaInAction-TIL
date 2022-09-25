@@ -1,5 +1,7 @@
-package modernjavainaction.practice;
+package modernjavainaction.practice.Chapter5;
 
+import modernjavainaction.practice.Trader;
+import modernjavainaction.practice.Transaction;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
