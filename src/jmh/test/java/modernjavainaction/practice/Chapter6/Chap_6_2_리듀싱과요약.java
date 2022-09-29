@@ -10,9 +10,6 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 import static modernjavainaction.practice.Other.DataManager.*;
-import static modernjavainaction.practice.Other.DataManager.CaloricLevel.*;
-import static modernjavainaction.practice.Dish.*;
-import static modernjavainaction.practice.Dish.FoodType.*;
 import static org.assertj.core.api.Assertions.*;
 
 /**

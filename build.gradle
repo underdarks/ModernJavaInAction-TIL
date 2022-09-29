@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.2'
 	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
 	id 'java'
+	id "me.champeau.jmh" version "0.6.7"
 }
 
 group = 'modernjavainaction'
@@ -23,7 +24,18 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	implementation 'org.openjdk.jmh:jmh-core:1.35'
+	jmhAnnotationProcessor 'org.openjdk.jmh:jmh-generator-annprocess:1.35'
+
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+// 여기에 기타 원하는 jmh 관련 설정을 넣는다
+jmh {
+	warmupIterations = 2
+	iterations = 5
+	fork = 1
 }
 
 tasks.named('test') {
