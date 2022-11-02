@@ -1,6 +1,8 @@
 package modernjavainaction.practice.Other;
 
 import modernjavainaction.practice.Dish;
+import modernjavainaction.practice.Trader;
+import modernjavainaction.practice.Transaction;
 
 import java.util.*;
 
@@ -15,6 +17,10 @@ public class DataManager {
     public static final Collection<Dish> specialMenu = getSpecialMenu();
 
     public static final Map<String, List<String>> dishTags= getDishTags();
+
+    private static final String CAMBRIDGE="Cambridge";
+    private static final String MILIAN="Milan";
+
 
 
     /**
@@ -89,6 +95,25 @@ public class DataManager {
         map.put("salmon",Arrays.asList("delicious","fresh"));
 
         return map;
+    }
+
+    /**
+     * 실전 엽습 데이터 생성
+     */
+    public static List<Transaction> getTransactionData(){
+        Trader raoul = new Trader("Raoul", CAMBRIDGE);
+        Trader mario = new Trader("Mario", MILIAN);
+        Trader alan = new Trader("Alan", CAMBRIDGE);
+        Trader brian = new Trader("Brian", CAMBRIDGE);
+
+        return new ArrayList<>(Arrays.asList(
+                new Transaction(brian, 2011, 300,"12"),
+                new Transaction(raoul, 2012, 1000,"34"),
+                new Transaction(raoul, 2011, 400,"56"),
+                new Transaction(mario, 2012, 710,"78"),
+                new Transaction(mario, 2012, 700,"910"),
+                new Transaction(alan, 2012, 950,"zzz")
+        ));
     }
 
 

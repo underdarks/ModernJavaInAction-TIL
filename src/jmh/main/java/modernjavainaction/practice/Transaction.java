@@ -2,22 +2,19 @@ package modernjavainaction.practice;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @AllArgsConstructor
+@ToString
 public class Transaction {
-    private final Trader trader;
-    private final int year;
-    private final int value;
+    private Trader trader;
+    private int year;
+    private int value;
+    private String referenceCode;
 
-    @Override
-    public String toString() {
-        return "{" +
-                "trader=" + trader +
-                ", year=" + year +
-                ", value=" + value +
-                '}';
-    }
+
+
 
 
 }

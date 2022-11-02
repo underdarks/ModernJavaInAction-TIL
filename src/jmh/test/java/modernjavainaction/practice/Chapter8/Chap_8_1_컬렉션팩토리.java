@@ -37,6 +37,24 @@ public class Chap_8_1_컬렉션팩토리 {
         //then
     }
 
+    @DisplayName("고정 크기의 리스트 삭제 테스트")
+    @Test
+    public void deleteFixedSizeList(){
+        //given
+        List<String> friends = Arrays.asList(values);    //고정 크기의 리스트 생성
+
+        //고정 크기의 리스트를 만들었으므로 새 요소 추가하려 하면 UnsupportedOperationException 발생
+        //when
+        assertThrows(UnsupportedOperationException.class,() ->{
+            for (String friend : friends) {
+                friends.remove(friend);
+            }
+
+        });
+
+        //then
+    }
+
     @DisplayName("불필요한 객체 할당으로 데이터 생성")
     @Test
     public void unnecessaryObjectAllocation(){
@@ -119,8 +137,5 @@ public class Chap_8_1_컬렉션팩토리 {
         assertThrows(UnsupportedOperationException.class,() ->{
             actors.set(0,"Brad");
         });
-
     }
-
-
 }

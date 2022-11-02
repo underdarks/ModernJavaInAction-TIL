@@ -5,11 +5,11 @@ import modernjavainaction.practice.Transaction;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Comparator.*;
 import static java.util.stream.Collectors.*;
+import static modernjavainaction.practice.Other.DataManager.getTransactionData;
 import static org.assertj.core.api.Assertions.*;
 
 public class Chapter5_실전연습 {
@@ -19,30 +19,11 @@ public class Chapter5_실전연습 {
 
 
 
-    @DisplayName("실전 엽습 데이터 생성")
-    @Test
-    public List<Transaction> createTransactionData(){
-        Trader raoul = new Trader("Raoul", CAMBRIDGE);
-        Trader mario = new Trader("Mario", MILIAN);
-        Trader alan = new Trader("Alan", CAMBRIDGE);
-        Trader brian = new Trader("Brian", CAMBRIDGE);
-
-        return Arrays.asList(
-                new Transaction(brian, 2011, 300),
-                new Transaction(raoul, 2012, 1000),
-                new Transaction(raoul, 2011, 400),
-                new Transaction(mario, 2012, 710),
-                new Transaction(mario, 2012, 700),
-                new Transaction(alan, 2012, 950)
-        );
-    }
-
-
     @DisplayName("실전연습 1번 - 20111년에 일어난 모든 트랙잭션을 찾아 값을 오름차순으로 정리하시오")
     @Test
     public void quiz1(){
         //given
-        List<Transaction> transactions = createTransactionData();
+        List<Transaction> transactions = getTransactionData();
 
         //when
         List<Transaction> tr2011 = transactions.stream()
@@ -60,7 +41,7 @@ public class Chapter5_실전연습 {
     @Test
     public void quiz2(){
         //given
-        List<Transaction> transactions = createTransactionData();
+        List<Transaction> transactions = getTransactionData();
 
         //when
         //distinct()와 List를 활용한 중복 제거
@@ -87,7 +68,7 @@ public class Chapter5_실전연습 {
     @Test
     public void quiz3(){
         //given
-        List<Transaction> transactions = createTransactionData();
+        List<Transaction> transactions = getTransactionData();
 
         //when
         List<Trader> traders = transactions.stream()
@@ -107,7 +88,7 @@ public class Chapter5_실전연습 {
     @Test
     public void quiz4(){
         //given
-        List<Transaction> transactions = createTransactionData();
+        List<Transaction> transactions = getTransactionData();
 
         //when
         List<String> names = transactions.stream()
@@ -125,7 +106,7 @@ public class Chapter5_실전연습 {
     @Test
     public void quiz5(){
         //given
-        List<Transaction> transactions = createTransactionData();
+        List<Transaction> transactions = getTransactionData();
 
         //when
         boolean isMilanoTrader = transactions.stream()
@@ -139,7 +120,7 @@ public class Chapter5_실전연습 {
     @Test
     public void quiz6(){
         //given
-        List<Transaction> transactions = createTransactionData();
+        List<Transaction> transactions = getTransactionData();
 
         //when
         List<Integer> values = transactions.stream()
@@ -156,7 +137,7 @@ public class Chapter5_실전연습 {
     @Test
     public void quiz7(){
         //given
-        List<Transaction> transactions = createTransactionData();
+        List<Transaction> transactions = getTransactionData();
 
         //when
         //reduce를 활용한 max값 구하기
@@ -182,7 +163,7 @@ public class Chapter5_실전연습 {
     @Test
     public void quiz8(){
         //given
-        List<Transaction> transactions = createTransactionData();
+        List<Transaction> transactions = getTransactionData();
 
         //when
         //reduce를 활용한 최소값 구하기
